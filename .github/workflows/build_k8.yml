@@ -1,27 +1,32 @@
 name: Build Keychron K8 ISO SignalRGB
-on: [workflow_dispatch] # Erlaubt den manuellen Start per Knopfdruck
+on: [workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Wir nutzen ein älteres Ubuntu, um Python-Konflikte zu vermeiden
+    runs-on: ubuntu-20.04 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          ref: sn32_develop # Wichtig: Nutzt den SignalRGB-Branch
+          ref: sn32_develop
           submodules: recursive
 
-      - name: Install dependencies
+      - name: Install ARM Toolchain
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
 
       - name: Build Firmware
         run: |
+          # Wir erzwingen den Build direkt über Make
           make keychron/k8/rgb/iso:iso
 
       - name: Upload Firmware
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: keychron_k8_iso_srgb
-          path: ./*.bin
+          # Sucht nach der .bin oder .hex Datei im Hauptverzeichnis
+          path: |
+            *.bin
+            *.hex
