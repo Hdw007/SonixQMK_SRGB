@@ -14,15 +14,18 @@ jobs:
       - name: Install ARM Toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi python3-pip
-          python3 -m pip install qmk
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+
+      - name: Initialize Sonix Submodules
+        run: |
+          # Speziell für den Sonix-Fork wichtig:
+          git submodule update --init --recursive
+          make git-submodule
 
       - name: Build Firmware
         run: |
-          # Basierend auf deiner Pfadangabe:
-          # Keyboard ist 'keychron/k8/rgb'
-          # Keymap Ordner ist 'iso'
-          qmk compile -kb keychron/k8/rgb -km iso
+          # Dein vorgeschlagener Befehl:
+          make keychron/k8/rgb/iso:iso
 
       - name: Upload Firmware
         uses: actions/upload-artifact@v4
