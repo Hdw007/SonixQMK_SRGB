@@ -1,7 +1,16 @@
 {
     "keyboard_name": "Keychron K8",
     "usb": {
-        "pid": "0xFE0F"
+        "vid": "0x3434",
+        "pid": "0xFE0F",
+        "device_version": "1.0.1"
+    },
+    "features": {
+        "rgb_matrix": true,
+        "raw_hid": true,
+        "console": false,
+        "command": false,
+        "extrakey": true
     },
     "layouts": {
         "LAYOUT_tkl_iso": {
