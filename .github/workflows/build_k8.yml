@@ -3,7 +3,6 @@ on: [workflow_dispatch]
 
 jobs:
   build:
-    # Wir nutzen den stabilen 22.04 Runner
     runs-on: ubuntu-22.04 
     steps:
       - name: Checkout
@@ -15,13 +14,15 @@ jobs:
       - name: Install ARM Toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi python3-pip
+          python3 -m pip install qmk
 
-      - name: Build Firmware (Bypass Python)
+      - name: Build Firmware
         run: |
-          # Wir nutzen QMK_BIN=true und SKIP_PYTHON=yes, 
-          # damit der Server nicht wegen der alten Skripte abstürzt.
-          make keychron/k8/rgb/iso:iso QMK_BIN=true SKIP_PYTHON=yes SKIP_GIT=yes
+          # Basierend auf deiner Pfadangabe:
+          # Keyboard ist 'keychron/k8/rgb'
+          # Keymap Ordner ist 'iso'
+          qmk compile -kb keychron/k8/rgb -km iso
 
       - name: Upload Firmware
         uses: actions/upload-artifact@v4
