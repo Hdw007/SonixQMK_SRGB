@@ -3,8 +3,8 @@ on: [workflow_dispatch]
 
 jobs:
   build:
-    # Wir nutzen ein älteres Ubuntu, um Python-Konflikte zu vermeiden
-    runs-on: ubuntu-20.04 
+    # Wir nutzen den stabilen 22.04 Runner
+    runs-on: ubuntu-22.04 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,16 +17,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
 
-      - name: Build Firmware
+      - name: Build Firmware (Bypass Python)
         run: |
-          # Wir erzwingen den Build direkt über Make
-          make keychron/k8/rgb/iso:iso
+          # Wir nutzen QMK_BIN=true und SKIP_PYTHON=yes, 
+          # damit der Server nicht wegen der alten Skripte abstürzt.
+          make keychron/k8/rgb/iso:iso QMK_BIN=true SKIP_PYTHON=yes SKIP_GIT=yes
 
       - name: Upload Firmware
         uses: actions/upload-artifact@v4
         with:
           name: keychron_k8_iso_srgb
-          # Sucht nach der .bin oder .hex Datei im Hauptverzeichnis
           path: |
             *.bin
             *.hex
+            .build/*.bin
+            .build/*.hex
