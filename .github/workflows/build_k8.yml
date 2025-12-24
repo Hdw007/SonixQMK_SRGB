@@ -11,20 +11,26 @@ jobs:
           ref: sn32_develop
           submodules: recursive
 
-      - name: Install ARM Toolchain
+      - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi python3-pip
+          # Wir installieren die QMK CLI, damit 'make' sie finden kann
+          pip3 install qmk
 
-      - name: Initialize Sonix Submodules
+      - name: QMK Setup
         run: |
-          # Speziell für den Sonix-Fork wichtig:
-          git submodule update --init --recursive
+          # Das verknüpft die CLI mit dem aktuellen Ordner
+          qmk setup -y -n
+
+      - name: Initialize Submodules
+        run: |
+          # Jetzt sollte 'make git-submodule' funktionieren
           make git-submodule
 
       - name: Build Firmware
         run: |
-          # Dein vorgeschlagener Befehl:
+          # Dein Befehl für das K8 ISO
           make keychron/k8/rgb/iso:iso
 
       - name: Upload Firmware
