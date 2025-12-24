@@ -21,7 +21,7 @@ jobs:
       - name: QMK Setup
         run: |
           # Das verknüpft die CLI mit dem aktuellen Ordner
-          qmk setup -y -n
+          qmk setup -y
 
       - name: Initialize Submodules
         run: |
