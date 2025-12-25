@@ -78,6 +78,7 @@ export function vKeysArrayCount()
 
 export function Initialize()
 {
+	device.read([0x00], 32, 10); // Flush any pending data
 	requestFirmwareType();
 	requestQMKVersion();
 	requestSignalRGBProtocolVersion();
@@ -120,7 +121,13 @@ function commandHandler()
 
 	do
 	{
-		const returnpacket = device.read([0x00], 33, 200);
+		let returnpacket = device.read([0x00], 32, 200);
+
+		// If we read 32 bytes, prepend the Report ID 0x00 to match the expected 33-byte format
+		if(returnpacket.length === 32)
+		{
+			returnpacket.unshift(0x00);
+		}
 
 		if(device.getLastReadSize() === 0)
 		{
@@ -135,7 +142,7 @@ function commandHandler()
 		// Via always sends a second packet with the same Command Id.
 		if(IsViaKeyboard)
 		{
-			device.read([0x00], 33, 200);
+			device.read([0x00], 32, 200);
 		}
 	}
 	while(device.getLastReadSize() > 0);
