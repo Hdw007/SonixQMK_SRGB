@@ -163,7 +163,9 @@ function processCommands(data)
 
 function requestQMKVersion() //Check the version of QMK Firmware that the keyboard is running
 {
-	device.write([0x00, 0x21], 33);
+	let packet = [0x00, 0x21];
+	while(packet.length < 33) packet.push(0x00);
+	device.write(packet, 33);
 	device.pause(30);
 	commandHandler();
 }
@@ -180,7 +182,9 @@ function returnQMKVersion(data)
 
 function requestSignalRGBProtocolVersion() //Grab the version of the SignalRGB Protocol the keyboard is running
 {
-	device.write([0x00, 0x22], 33);
+	let packet = [0x00, 0x22];
+	while(packet.length < 33) packet.push(0x00);
+	device.write(packet, 33);
 	device.pause(30);
 	commandHandler();
 }
@@ -205,7 +209,9 @@ function returnSignalRGBProtocolVersion(data)
 
 function requestUniqueIdentifier() //Grab the unique identifier for this keyboard model
 {
-	if(device.write([0x00, 0x23], 33) === -1)
+	let packet = [0x00, 0x23];
+	while(packet.length < 33) packet.push(0x00);
+	if(device.write(packet, 33) === -1)
 	{
 		device.notify("Unsupported Firmware", "This device is not running SignalRGB-compatible firmware. Click the Documentation button to learn more.", 3, "Documentation");
 	}
@@ -231,7 +237,9 @@ function returnUniqueIdentifier(data)
 
 function requestTotalLeds() //Calculate total number of LEDs
 {
-	device.write([0x00, 0x27], 33);
+	let packet = [0x00, 0x27];
+	while(packet.length < 33) packet.push(0x00);
+	device.write(packet, 33);
 	device.pause(30);
 	commandHandler();
 }
@@ -245,7 +253,9 @@ function returnTotalLeds(data)
 
 function requestFirmwareType()
 {
-	device.write([0x00, 0x28], 33);
+	let packet = [0x00, 0x28];
+	while(packet.length < 33) packet.push(0x00);
+	device.write(packet, 33);
 	device.pause(30);
 	commandHandler();
 }
@@ -276,13 +286,17 @@ function returnFirmwareType(data)
 
 function effectEnable() //Enable the SignalRGB Effect Mode
 {
-	device.write([0x00, 0x25], 33);
+	let packet = [0x00, 0x25];
+	while(packet.length < 33) packet.push(0x00);
+	device.write(packet, 33);
 	device.pause(30);
 }
 
 function effectDisable() //Revert to Hardware Mode
 {
-	device.write([0x00, 0x26], 33);
+	let packet = [0x00, 0x26];
+	while(packet.length < 33) packet.push(0x00);
+	device.write(packet, 33);
 	device.pause(30);
 }
 
