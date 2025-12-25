@@ -132,8 +132,14 @@ bool dip_switch_update_user(uint8_t index, bool active){
 
 void keyboard_post_init_user(void) {
   // Customise these values to desired behaviour
-  //debug_enable=true;
+  debug_enable=true;
   //debug_matrix=true;
   //debug_keyboard=true;
   //debug_mouse=true;
+  uprintf("Console connected.\n");
+  #ifdef SIGNALRGB_ENABLE
+  uprintf("SignalRGB is ENABLED in firmware.\n");
+  #else
+  uprintf("SignalRGB is DISABLED in firmware.\n");
+  #endif
 }
