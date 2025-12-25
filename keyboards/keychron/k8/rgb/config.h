@@ -26,3 +26,6 @@
 
 // Setze hier z.B. 300 für 5 Minuten Inaktivität
 #define RGB_DISABLE_AFTER_TIMEOUT 0
+
+#define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#define RGB_MATRIX_KEYPRESSES
