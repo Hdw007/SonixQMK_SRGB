@@ -120,7 +120,13 @@ function commandHandler()
 
 	do
 	{
-		const returnpacket = device.read([0x00], 33, 10);
+		const returnpacket = device.read([0x00], 33, 200);
+
+		if(device.getLastReadSize() === 0)
+		{
+			device.log("Command Read Timeout");
+		}
+
 		processCommands(returnpacket);
 
 		readCounts.push(device.getLastReadSize());
@@ -129,7 +135,7 @@ function commandHandler()
 		// Via always sends a second packet with the same Command Id.
 		if(IsViaKeyboard)
 		{
-			device.read([0x00], 33, 10);
+			device.read([0x00], 33, 200);
 		}
 	}
 	while(device.getLastReadSize() > 0);
@@ -166,7 +172,7 @@ function requestQMKVersion() //Check the version of QMK Firmware that the keyboa
 	let packet = [0x00, 0x21];
 	while(packet.length < 33) packet.push(0x00);
 	device.write(packet, 33);
-	device.pause(30);
+	device.pause(100);
 	commandHandler();
 }
 
@@ -185,7 +191,7 @@ function requestSignalRGBProtocolVersion() //Grab the version of the SignalRGB P
 	let packet = [0x00, 0x22];
 	while(packet.length < 33) packet.push(0x00);
 	device.write(packet, 33);
-	device.pause(30);
+	device.pause(100);
 	commandHandler();
 }
 
@@ -216,7 +222,7 @@ function requestUniqueIdentifier() //Grab the unique identifier for this keyboar
 		device.notify("Unsupported Firmware", "This device is not running SignalRGB-compatible firmware. Click the Documentation button to learn more.", 3, "Documentation");
 	}
 
-	device.pause(30);
+	device.pause(100);
 	commandHandler();
 }
 
@@ -240,7 +246,7 @@ function requestTotalLeds() //Calculate total number of LEDs
 	let packet = [0x00, 0x27];
 	while(packet.length < 33) packet.push(0x00);
 	device.write(packet, 33);
-	device.pause(30);
+	device.pause(100);
 	commandHandler();
 }
 
@@ -256,7 +262,7 @@ function requestFirmwareType()
 	let packet = [0x00, 0x28];
 	while(packet.length < 33) packet.push(0x00);
 	device.write(packet, 33);
-	device.pause(30);
+	device.pause(100);
 	commandHandler();
 }
 
