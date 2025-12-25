@@ -26,6 +26,3 @@
 
 // Setze hier z.B. 300 für 5 Minuten Inaktivität
 #define RGB_DISABLE_AFTER_TIMEOUT 0
-
-// Schaltet LEDs aus, wenn der USB-Bus schläft
-#define RGB_DISABLE_WHEN_USB_SUSPENDED
